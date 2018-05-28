@@ -1,0 +1,22 @@
+{
+  "name": "friendfinder",
+  "version": "1.0.0",
+  "description": "app that finds you friends",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AirrickB31/FriendFinder.git"
+  },
+  "author": "Eric Bartos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AirrickB31/FriendFinder/issues"
+  },
+  "homepage": "https://github.com/AirrickB31/FriendFinder#readme",
+  "dependencies": {
+    "nodemon": "^1.17.5"
+  }
+}
