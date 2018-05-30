@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>Survey</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
@@ -145,7 +145,20 @@
     <!-- Submit Button -->
     <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit"><i class="fa fa-check-circle" aria-hidden="true"></i>
      Submit</button>
-
+     <div id="freshFriendModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">X</button>
+                        <h2 class="modal-title">Best Match</h2>
+                    </div>
+                    <div class="modal-body">
+                        <h2 id="freshFriendName"></h2>
+                        <img id="freshFriendPhoto" src="" width=500px>
+                    </div>
+                </div>
+            </div>
+        </div>
     <hr>
     <footer class="footer">
       <div class="container">
@@ -154,24 +167,43 @@
     </footer>
 
   </div>
-  <!-- <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h2 class="modal-title"><strong>Best Match</strong></h2>
-        </div>
-        <div class="modal-body">
-          <h2 id="matchNameforModal"></h2>
-          <img id="modalPhoto" src="" alt="">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
 
-    </div>
-  </div> -->
+<script type="text/javascript">
 
+    $(".submit").on("click", function(event) {
+      event.preventDefault();
 
+      // Here we grab the form elements
+      var newFriend = {
+        name: $('#name').val().trim(),
+  			photo: $('#photo').val().trim(),
+  			scores: [$('#q1').val().trim(), $('#q2').val().trim(), $('#q3').val().trim(), $('#q4').val().trim(), $('#q5').val().trim(), $('#q6').val().trim(), $('#q7').val().trim(), $('#q8').val().trim(), $('#q9').val().trim(), $('#q10').val().trim()]
+  		}
+          $.post("/api/friends", newFriend,
+                function (data) {
+                    if (data) {
+                        var friendImage = data.photo;
+                        var friendName = data.name;
+                        var modalHtml = "<img src='" + friendImage + "' alt = 'person' > <h2>" + friendName + "</h2>"
+                        $('#freshFriendModal').on('show.modal', function (event) {
+                            var modal = $(this);
+                            modal.find('.modal-body').html(modalHtml);
+                        })
+                        $("#freshFriendModal").modal({ show: true });
+                    } else {
+                        alert("something went wrong ...")
+                    }
+                    //clear the form contents
+                    for (let i = 1; i < 11; i++) {
+                        var questionSelector = ".question" + i + " option:selected"
+                        console.log("questionSelector: " + questionSelector)
+                        $(questionSelector).prop("selected", false);
+                    }
+                    $("#inputName").val("");
+                    $("#inputImageURL").val("");
+                });
+            });
+</script>
 
 
 
